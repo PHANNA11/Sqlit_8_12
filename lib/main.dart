@@ -18,31 +18,37 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page', userObj: User()),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title, required this.userObj});
 
   final String title;
+  User userObj;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  initObject() {
+    nameController.text = widget.userObj.name.toString();
+    ageController.text = widget.userObj.age.toString();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.userObj.id != null) {
+      initObject();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,15 +79,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   label: Text('age')),
             ),
           ),
-          CupertinoButton(
-              color: Theme.of(context).primaryColor,
-              child: const Text('save'),
-              onPressed: () async {
-                await DBConnection().insertData(User(
-                    id: DateTime.now().millisecond,
-                    name: nameController.text,
-                    age: int.parse(ageController.text)));
-              })
+          widget.userObj.id == null
+              ? CupertinoButton(
+                  color: Theme.of(context).primaryColor,
+                  child: const Text('save'),
+                  onPressed: () async {
+                    await DBConnection().insertData(User(
+                        id: DateTime.now().millisecond,
+                        name: nameController.text,
+                        age: int.parse(ageController.text)));
+                  })
+              : CupertinoButton(
+                  color: Theme.of(context).primaryColor,
+                  child: const Text('update'),
+                  onPressed: () async {
+                    await DBConnection()
+                        .updateData(User(
+                            id: widget.userObj.id,
+                            name: nameController.text,
+                            age: int.parse(ageController.text)))
+                        .then((value) => Navigator.pop(context));
+                  })
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -89,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ListData(),
+                builder: (context) => ListData(),
               ));
         },
         tooltip: 'Increment',

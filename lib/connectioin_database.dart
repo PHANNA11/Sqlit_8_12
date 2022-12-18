@@ -29,6 +29,17 @@ class DBConnection {
     final List<Map<String, dynamic>> queryResult = await db.query(tblName);
     return queryResult.map((e) => User.fromJsonData(e)).toList();
   }
+
+  Future<void> deleteData(int id) async {
+    final db = await initializeDatabase();
+    await db.delete(tblName, where: '$fId=?', whereArgs: [id]);
+  }
+
+  Future<void> updateData(User user) async {
+    final db = await initializeDatabase();
+    await db.update(tblName, user.toJsonData(),
+        where: '$fId=?', whereArgs: [user.id]);
+  }
 }
 
 //object-relational mapping (ORM)
