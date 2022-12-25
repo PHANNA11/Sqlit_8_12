@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,6 +17,7 @@ class ListData extends StatefulWidget {
 class _ListDataState extends State<ListData> {
   late DBConnection db;
   List<User> users = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +40,16 @@ class _ListDataState extends State<ListData> {
           var user = users[index];
           return Card(
             child: ListTile(
+              leading: user.profile == null
+                  ? CircleAvatar(child: Text(user.name!.substring(0, 1)))
+                  : CircleAvatar(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    FileImage(File(user.profile.toString())))),
+                      ),
+                    ),
               onTap: () {
                 Navigator.push(
                     context,

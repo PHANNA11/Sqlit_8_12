@@ -11,7 +11,7 @@ class DBConnection {
       join(path, 'uerDbs.db'),
       onCreate: (database, version) async {
         await database.execute(
-          'CREATE TABLE $tblName($fId INTEGER PRIMARY KEY, $fName TEXT, $fAge INTEGER)',
+          'CREATE TABLE $tblName($fId INTEGER PRIMARY KEY, $fName TEXT, $fAge INTEGER, $fprofile TEXT)',
         );
       },
       version: 1,

@@ -14,6 +14,8 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>sqlit8_12</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>select image to use</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

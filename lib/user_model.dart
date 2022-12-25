@@ -4,13 +4,15 @@ class User {
   int? id;
   String? name;
   int? age;
-  User({this.age, this.id, this.name});
+  String? profile;
+  User({this.age, this.id, this.name, this.profile});
   Map<String, dynamic> toJsonData() {
-    return {fId: id, fName: name, fAge: age};
+    return {fId: id, fName: name, fAge: age, fprofile: profile};
   }
 
   User.fromJsonData(Map<String, dynamic> res)
       : id = res[fId],
         name = res[fName],
-        age = res[fAge];
+        age = res[fAge],
+        profile = res[fprofile];
 }
